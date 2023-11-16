@@ -1,7 +1,7 @@
 PROJECT_NAME       = "d4ml-iac-terraform-igne"
 ENVIRONMENT        = "dev"
 AWS_DEFAULT_REGION = "eu-west-1"
-#AWS_SECONDARY_REGION = "eu-central-1"
+AWS_SECONDARY_REGION = "eu-central-1"
 PRIVATE_IP_CIDR      = "192.168.1.147/32"
 AMI_ID               = "ami-09e838a758cc6574b"
 KEY_PAIR_NAME        = "igne_kp"

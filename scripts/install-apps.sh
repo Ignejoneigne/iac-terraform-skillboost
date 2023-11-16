@@ -8,8 +8,8 @@ sudo apt update
 sudo apt install -y unzip git python3 python3-pip
 
 # Download and install Terraform (latest version)
-wget https://releases.hashicorp.com/terraform/1.6.3/terraform_1.6.3_linux_amd64.zip
-unzip terraform_1.6.3_linux_amd64.zip
+wget https://releases.hashicorp.com/terraform/1.6.4/terraform_1.6.4_linux_amd64.zip
+unzip terraform_1.6.4_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 
 # Install the AWS CLI
