@@ -12,13 +12,6 @@ provider "aws" {
   profile = "dev-mfa"
 }
 
-provider "aws" {
-  alias   = "central"
-  region  = var.AWS_SECONDARY_REGION
-  profile = "dev-mfa"
-}
-
 data "aws_vpc" "default" {
   default = true
 }
-

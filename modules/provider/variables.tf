@@ -3,7 +3,3 @@ variable "AWS_DEFAULT_REGION" {
   type        = string
 }
 
-variable "AWS_SECONDARY_REGION" {
-  description = "The secondary AWS region"
-  type        = string
-}
