@@ -29,6 +29,8 @@ phases:
     commands:
       - "cd ${CODEBUILD_SRC_DIR}/${CODE_SRC_DIR}"
       - |
+
+      
         if [ "${BUILD_PHASE}" == "validate" ]; then
           echo ## TERRAFORM INIT : Initialize the Terraform Workspace
           terraform init
