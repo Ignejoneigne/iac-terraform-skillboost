@@ -143,3 +143,8 @@ variable "CODECOMMIT_REPO_URL" {
     description = "The URL of the CodeCommit repository"
     type        = string
 }
+
+variable "VPC_ID" {
+    description = "The ID of the VPC"
+    type        = string
+}
