@@ -12,3 +12,7 @@ output "arn" {
     value       = aws_codebuild_project.project.arn
     description = "ARN of the CodeBuild project"
 }
+output "service_role" {
+    value       = aws_codebuild_project.project.service_role
+    description = "Service role of the CodeBuild project"
+}

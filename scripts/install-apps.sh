@@ -2,7 +2,7 @@
 
 # Update the system
 cd ~
-sudp apt update -y
+sudo apt update -y
 
 # Install unzip, git, and Python (if not already installed)
 sudo apt install -y unzip git python3 python3-pip

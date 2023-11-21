@@ -1,11 +1,11 @@
 resource "aws_codecommit_approval_rule_template" "source_repository_approval" {
-    name        = "${var.source_repo_name}-${var.source_repo_branch}-Rule"
+    name        = "${var.CODECOMMIT_REPO_NAME}-${var.CODECOMMIT_BRANCH}-Rule"
     description = "Approval rule template for enabling approval process"
 
     content = <<EOF
 {
         "Version": "2018-11-08",
-        "DestinationReferences": ["refs/heads/${var.source_repo_branch}"],
+        "DestinationReferences": ["refs/heads/${var.CODECOMMIT_BRANCH}"],
         "Statements": [{
                 "Type": "Approvers",
                 "NumberOfApprovalsNeeded": 2

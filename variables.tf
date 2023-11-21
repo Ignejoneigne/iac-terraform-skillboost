@@ -148,3 +148,95 @@ variable "VPC_ID" {
     description = "The ID of the VPC"
     type        = string
 }
+
+variable "CODECOMMIT_REPO_URL" {
+    description = "The URL of the CodeCommit repository"
+    type        = string
+}
+
+variable "CODEBUILD_PROJECT_NAME" {
+    description = "The name of the CodeBuild project"
+    type        = string
+}
+
+variable "CODEBUILD_ROLE_ARN" {
+    description = "The ARN of the IAM role for the CodeBuild project"
+    type        = string
+}
+
+variable "CODECOMMIT_REPO_URL" {
+    description = "The URL of the CodeCommit repository"
+    type        = string
+}
+
+variable "CODECOMMIT_BRANCH" {
+    description = "The branch of the CodeCommit repository"
+    type        = string
+}
+variable "CODEBUILD_PROJECT_NAME" {
+    description = "The name of the CodeBuild project"
+    type        = string
+}
+
+variable "CODEBUILD_ROLE_ARN" {
+    description = "The ARN of the IAM role for the CodeBuild project"
+    type        = string
+}
+
+variable "PROJECT_NAME" {
+    description = "The name of the project"
+    type        = string
+}
+
+variable "CODECOMMIT_REPO_NAME" {
+    description = "The name of the CodeCommit repository"
+    type        = string
+}
+
+variable "builder_compute_type" {
+    description = "Information about the compute resources the build project will use"
+    type        = string
+    default     = "BUILD_GENERAL1_SMALL"
+}
+
+variable "builder_image" {
+    description = "Docker image to use for the build project"
+    type        = string
+    default     = "aws/codebuild/standard:4.0"
+}
+
+variable "build_projects" {
+    description = "List of Names of the CodeBuild projects to be created"
+    type        = list(string)
+    default     = ["project1", "project2"]
+}
+
+variable "builder_type" {
+    description = "Type of build environment to use for related builds"
+    type        = string
+    default     = "LINUX_CONTAINER"
+}
+
+variable "builder_image_pull_credentials_type" {
+    description = "Type of credentials AWS CodeBuild uses to pull images in your build."
+    type        = string
+    default     = "CODEBUILD"
+}
+
+variable "build_project_source" {
+    description = "Information about the build output artifact location"
+    type        = string
+    default     = ""
+}
+
+variable "kms_key_arn" {
+    description = "ARN of KMS key for encryption"
+    type        = string
+    default     = ""
+}
+
+variable "tags" {
+    description = "Tags to be applied to the codebuild project"
+    type        = map(any)
+    default     = {}
+}

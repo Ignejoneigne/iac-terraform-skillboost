@@ -1,21 +1,31 @@
-resource "aws_codebuild_project" "project" {
-    name          = var.CODEBUILD_PROJECT_NAME
-    service_role  = var.CODEBUILD_ROLE_ARN
+resource "aws_codebuild_project" "terraform_codebuild_project" {
+    count = length(var.CODEBUILD_PROJECT_NAME)
 
-    source {
-        type            = "CODECOMMIT"
-        location        = var.CODECOMMIT_REPO_URL
-        git_clone_depth = 1
-    }
+    name           = var.CODEBUILD_PROJECT_NAME[count.index]
+    service_role   = var.CODEBUILD_ROLE_ARN
+    tags           = var.tags
 
     artifacts {
-        type = "NO_ARTIFACTS"
+        type = var.build_project_source
+        location = var.BUCKET_NAME
     }
 
     environment {
-        compute_type                = "BUILD_GENERAL1_SMALL"
-        image                       = "aws/codebuild/standard:5.0"
-        type                        = "LINUX_CONTAINER"
-        privileged_mode             = true
+        compute_type                = var.builder_compute_type
+        image                       = var.builder_image
+        type                        = var.builder_type
+        privileged_mode             = var.privileged_mode
+        image_pull_credentials_type = var.builder_image_pull_credentials_type
+    }
+
+    logs_config {
+        cloudwatch_logs {
+            status = "ENABLED"
+        }
+    }
+
+    source {
+        type      = var.build_project_source
+        buildspec = "./buildspec.yml"
     }
 }
