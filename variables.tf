@@ -149,44 +149,11 @@ variable "VPC_ID" {
     type        = string
 }
 
-variable "CODECOMMIT_REPO_URL" {
-    description = "The URL of the CodeCommit repository"
-    type        = string
-}
-
-variable "CODEBUILD_PROJECT_NAME" {
-    description = "The name of the CodeBuild project"
-    type        = string
-}
-
-variable "CODEBUILD_ROLE_ARN" {
-    description = "The ARN of the IAM role for the CodeBuild project"
-    type        = string
-}
-
-variable "CODECOMMIT_REPO_URL" {
-    description = "The URL of the CodeCommit repository"
-    type        = string
-}
-
 variable "CODECOMMIT_BRANCH" {
     description = "The branch of the CodeCommit repository"
     type        = string
 }
-variable "CODEBUILD_PROJECT_NAME" {
-    description = "The name of the CodeBuild project"
-    type        = string
-}
 
-variable "CODEBUILD_ROLE_ARN" {
-    description = "The ARN of the IAM role for the CodeBuild project"
-    type        = string
-}
-
-variable "PROJECT_NAME" {
-    description = "The name of the project"
-    type        = string
-}
 
 variable "CODECOMMIT_REPO_NAME" {
     description = "The name of the CodeCommit repository"
@@ -203,12 +170,6 @@ variable "builder_image" {
     description = "Docker image to use for the build project"
     type        = string
     default     = "aws/codebuild/standard:4.0"
-}
-
-variable "build_projects" {
-    description = "List of Names of the CodeBuild projects to be created"
-    type        = list(string)
-    default     = ["project1", "project2"]
 }
 
 variable "builder_type" {
@@ -240,3 +201,8 @@ variable "tags" {
     type        = map(any)
     default     = {}
 }
+variable "CODEBUILD_PROJECT_NAME" {
+    description = "The name of the CodeBuild project"
+    type        = string
+}
+
