@@ -1,7 +1,3 @@
-variable "CODEBUILD_PROJECT_NAME" {
-    description = "The name of the CodeBuild project"
-    type        = list(string)
-}
 
 variable "CODEBUILD_ROLE_ARN" {
     description = "The ARN of the IAM role for the CodeBuild project"
@@ -12,19 +8,16 @@ variable "CODEBUILD_ROLE_ARN" {
 variable "CODECOMMIT_REPO_NAME" {
     description = "The name of the CodeCommit repository"
     type        = string
-    default     = "d4ml-iac-terraform-skillboost"
 }
 
 variable "CODECOMMIT_REPO_URL" {
     description = "The HTTP URL of the CodeCommit repository"
     type        = string
-    default     = "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/d4ml-iac-terraform-skillboost"
 }
 
 variable "CODECOMMIT_BRANCH" {
     description = "The branch of the CodeCommit repository"
     type        = string
-    default     = "d4ml-iac-terraform-igne"
 }
 
 variable "AWS_DEFAULT_REGION" {
@@ -37,11 +30,11 @@ variable "BUCKET_NAME" {
     type        = string
 }
 
-variable "PROJECT_NAME" {
-    description = "The name of the project"
-    type        = string
+variable "CODEBUILD_PROJECT_NAME" {
+    description = "The names of the CodeBuild projects"
+    type        = list(string)
+    default     = []
 }
-
 variable "ENVIRONMENT" {
     description = "The environment (e.g., dev, prod)"
     type        = string

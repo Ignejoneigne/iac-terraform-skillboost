@@ -3,7 +3,7 @@ AWS_DEFAULT_REGION   = "eu-west-1"
 AWS_SECONDARY_REGION = "eu-central-1"
 BUCKET_NAME          = "d4ml-iac-terraform"
 
-CODEBUILD_PROJECT_NAME = "d4ml-iac-terraform-igne"
+CODEBUILD_PROJECT_NAME = ["d4ml-iac-terraform-igne", "d4ml-iac-terraform-igne1"]
 CODEBUILD_ROLE_ARN   = "arn:aws:iam::823164954914:role/service-role/codebuild-d4ml-iac-terraform-service-role "
 CODEBUILD_ROLE_NAME  = "codebuild-d4ml-iac-terraform-service-role"
 CODECOMMIT_REPO_NAME = "d4ml-iac-terraform-skillboost"
@@ -35,8 +35,12 @@ build_projects       = ["project1", "project2"] #List of Names of the CodeBuild 
 builder_type = "LINUX_CONTAINER"
 builder_image_pull_credentials_type = "CODEBUILD" #Type of credentials AWS CodeBuild uses to pull images in your build.
 build_project_source = "" #Information about the build output artifact location
-tags = "d4ml-iac-terraform-igne"
 
+tags = {
+    Name = "d4ml-iac-terraform-igne",
+    Environment = "dev",
+    Project = "d4ml"
+}
 
 
 STAGE_INPUT = [

@@ -6,15 +6,15 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     tags           = var.tags
 
     artifacts {
-        type = var.build_project_source
+        type = "S3"
         location = var.BUCKET_NAME
+        encryption_disabled = true
     }
 
     environment {
         compute_type                = var.builder_compute_type
         image                       = var.builder_image
         type                        = var.builder_type
-        privileged_mode             = var.privileged_mode
         image_pull_credentials_type = var.builder_image_pull_credentials_type
     }
 
@@ -25,7 +25,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     }
 
     source {
-        type      = var.build_project_source
+        type      = "S3"
         buildspec = "./buildspec.yml"
     }
 }

@@ -1,3 +1,5 @@
+
+#Specify the required version of Terraform and the required providers
 terraform {
     required_version = ">= 1.0.0"
 
@@ -8,7 +10,7 @@ terraform {
         }
     }
 }
-
+#Configure the AWS provider
 provider "aws" {
     region  = var.AWS_DEFAULT_REGION
     profile = "dev-mfa"
@@ -23,18 +25,18 @@ data "aws_vpc" "main" {
 }
 
 locals {
-    account_id = "your-account-id"  # replace with your AWS account ID
     region     = var.AWS_DEFAULT_REGION
 }
 
 #Module for creating a new S3 bucket for storing pipeline artifacts
-module "s3_artifacts_bucket" {
+module "s3_bucket" {
   source = "./modules/s3-bucket"
   PROJECT_NAME = var.PROJECT_NAME
   BUCKET_NAME = var.BUCKET_NAME
   AWS_DEFAULT_REGION= var.AWS_DEFAULT_REGION
 }
 
+# Calls a module that creates an IAM role.
 module "iam-role" {
     source = "./modules/iam-role"
     CODEPIPELINE_ROLE_NAME = var.CODEPIPELINE_ROLE_NAME
@@ -42,66 +44,51 @@ module "iam-role" {
     PROJECT_NAME = var.PROJECT_NAME
 }
 
-# Module for Infrastructure Source code repository
+# Calls a module that sets up a CodeCommit repository for infrastructure source code.
 module "codecommit_infrastructure_source_repo" {
     source = "./modules/codecommit"
+
+    source_repo_name = var.CODECOMMIT_REPO_NAME
     CODECOMMIT_REPO_NAME = var.CODECOMMIT_REPO_NAME
     CODECOMMIT_BRANCH = var.CODECOMMIT_BRANCH
 }
 
-# Module for Infrastructure Validation - CodeBuild
+# Defines an EC2 instance resource.
+resource "aws_instance" "ec2_instance" {
+    instance_type          = var.INSTANCE_TYPE
+    iam_instance_profile   = var.IAM_INSTANCE_PROFILE
+    ami                    = var.AMI_ID
+    vpc_security_group_ids = [var.SECURITY_GROUP]  # Assuming SECURITY_GROUP is a security group ID
+    key_name               = var.KEY_PAIR_NAME
+    subnet_id              = var.VPC_ID  # Assuming VPC_ID is actually a subnet ID
 
-module "codebuild_terraform" {
-    depends_on = [
-        module.codecommit_infrastructure_source_repo
-    ]
-    source = "./modules/codebuild"
-
-    build_project_source                = module.s3-bucket.bucket_name
-    builder_compute_type                = "LINUX_CONTAINER"
-    builder_image                       = "aws/codebuild/standard:4.0"
-    builder_image_pull_credentials_type = "CODEBUILD"
-    builder_type                        = "LINUX_CONTAINER"
-    kms_key_arn                         = module.codepipeline_kms.arn
-    AWS_DEFAULT_REGION                  = var.AWS_DEFAULT_REGION
-    BUCKET_NAME                         = var.BUCKET_NAME
-    CODEBUILD_PROJECT_NAME              = var.CODEBUILD_PROJECT_NAME
-    PROJECT_NAME                        = var.PROJECT_NAME
-    ENVIRONMENT                         = var.ENVIRONMENT
     tags = {
-        Project_Name = var.CODEBUILD_PROJECT_NAME
+        PROJECT_NAME = var.PROJECT_NAME
     }
 }
 
-# Module for Infrastructure Validate, Plan, Apply and Destroy - CodePipeline
-#module "codepipeline_terraform" {
-#    depends_on = [
-#        modules.codebuild,
-#    ]
-#    source = "./modules/codepipeline"
-#
-#    project_name          = var.PROJECT_NAME
-#    source_repo_name      = var.source_repo_name
-#    source_repo_branch    = var.source_repo_branch
-#    s3_bucket_name        = var.BUCKET_NAME
-#    codepipeline_role_arn = var.CODEPIPELINE_ROLE_ARN
-#    stages                = var.STAGE_INPUT
-#
-#    tags = {
-#        Project_Name = var.PROJECT_NAME
-#        Environment  = var.ENVIRONMENT
-#        Account_ID   = data.aws_caller_identity.current.account_id
-#        Region       = var.AWS_DEFAULT_REGION
-#    }
-#}
+# Calls a module that sets up a CodeBuild project for infrastructure validation.
+module "codebuild_terraform" {
+  source = "./modules/codebuild"
+  
+  depends_on = [module.codecommit_infrastructure_source_repo]
 
-module "ec2-instance" {
-    source = "./modules/ec2-instance"
-    AMI_ID = var.AMI_ID
-    INSTANCE_TYPE = var.INSTANCE_TYPE
-    IAM_INSTANCE_PROFILE = var.IAM_INSTANCE_PROFILE
-    SECURITY_GROUP = var.SECURITY_GROUP
-    source_repo_name = var.source_repo_name
+  builder_compute_type                = "BUILD_GENERAL1_SMALL"
+  builder_image                       = "aws/codebuild/standard:4.0"
+  builder_image_pull_credentials_type = "CODEBUILD"
+  builder_type                        = "LINUX_CONTAINER"
+  kms_key_arn                         = var.kms_key_arn
+  build_project_source                = "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/d4ml-iac-terraform-skillboost"
+  ENVIRONMENT                         = "dev"
+  CODECOMMIT_REPO_URL                 = var.CODECOMMIT_REPO_URL
+  BUCKET_NAME                         = var.BUCKET_NAME
+  AWS_DEFAULT_REGION                  = var.AWS_DEFAULT_REGION
+  CODECOMMIT_REPO_NAME = var.CODECOMMIT_REPO_NAME
+  CODECOMMIT_BRANCH                   = var.CODECOMMIT_BRANCH
+  CODEBUILD_PROJECT_NAME              = var.CODEBUILD_PROJECT_NAME
+  tags = {
     PROJECT_NAME = var.PROJECT_NAME
-    KEY_PAIR_NAME = var.KEY_PAIR_NAME
+  }
 }
+
+

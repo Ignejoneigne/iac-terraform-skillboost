@@ -67,10 +67,6 @@ variable "BUCKET_NAME" {
     description = "The name of the S3 bucket"
     type        = string
 }
-variable "CODEBUILD_PROJECT_NAME" {
-    description = "The name of the CodeBuild project"
-    type        = string
-}
 
 variable "create_new_repo" {
     description = "Flag to determine whether to create a new repository"
@@ -202,7 +198,7 @@ variable "tags" {
     default     = {}
 }
 variable "CODEBUILD_PROJECT_NAME" {
-    description = "The name of the CodeBuild project"
-    type        = string
+    description = "The names of the CodeBuild projects"
+    type        = list(string)
+    default     = []
 }
-
