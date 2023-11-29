@@ -3,7 +3,7 @@ AWS_DEFAULT_REGION   = "eu-west-1"
 AWS_SECONDARY_REGION = "eu-central-1"
 BUCKET_NAME          = "d4ml-iac-terraform"
 
-CODEBUILD_PROJECT_NAME = ["d4ml-iac-terraform-igne", "d4ml-iac-terraform-igne1"]
+CODEBUILD_PROJECT_NAME = ["d4ml-dev-igne-project", "d4ml-dev-igne1-project"]
 CODEBUILD_ROLE_ARN   = "arn:aws:iam::823164954914:role/service-role/codebuild-d4ml-iac-terraform-service-role "
 CODEBUILD_ROLE_NAME  = "codebuild-d4ml-iac-terraform-service-role"
 CODECOMMIT_REPO_NAME = "d4ml-iac-terraform-skillboost"
