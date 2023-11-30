@@ -20,9 +20,9 @@ variable "AWS_SECONDARY_REGION" {
     description = "The secondary AWS region"
     type        = string
 }
-data "aws_vpc" "main" {
-  default = true
-}
+#data "aws_vpc" "main" {
+#  default = true
+#}
 
 locals {
     region     = var.AWS_DEFAULT_REGION
