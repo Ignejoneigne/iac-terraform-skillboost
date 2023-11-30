@@ -145,6 +145,10 @@ variable "VPC_ID" {
     type        = string
 }
 
+variable "SUBNET_ID" {
+    description = "The ID of the subnet"
+    type        = string
+}
 variable "CODECOMMIT_BRANCH" {
     description = "The branch of the CodeCommit repository"
     type        = string

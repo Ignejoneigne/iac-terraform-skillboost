@@ -60,7 +60,7 @@ resource "aws_instance" "ec2_instance" {
     ami                    = var.AMI_ID
     vpc_security_group_ids = [var.SECURITY_GROUP]  # Assuming SECURITY_GROUP is a security group ID
     key_name               = var.KEY_PAIR_NAME
-    subnet_id              = var.VPC_ID  # Assuming VPC_ID is actually a subnet ID
+    subnet_id              = var.SUBNET_ID
 
     tags = {
         PROJECT_NAME = var.PROJECT_NAME
@@ -70,7 +70,7 @@ resource "aws_instance" "ec2_instance" {
 # Calls a module that sets up a CodeBuild project for infrastructure validation.
 module "codebuild_terraform" {
   source = "./modules/codebuild"
-  
+
   depends_on = [module.codecommit_infrastructure_source_repo]
 
   builder_compute_type                = "BUILD_GENERAL1_SMALL"

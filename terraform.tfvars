@@ -29,6 +29,7 @@ source_repo_branch   = "main"
 source_repo_name     = "my-source-repo"
 USER_IP_ADDRESS      = "5.20.132.172/32"
 VPC_ID               = "vpc-08bf37a6e1daabbde"
+SUBNET_ID = "subnet-0ce16f4e9360575be"
 builder_compute_type = "BUILD_GENERAL1_SMALL" #Information about the compute resources the build project will use
 builder_image = "aws/codebuild/standard:4.0"  #Docker image to use for the build project
 build_projects       = ["project1", "project2"] #List of Names of the CodeBuild projects to be created

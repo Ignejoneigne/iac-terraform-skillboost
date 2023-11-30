@@ -17,5 +17,5 @@ EOF
 resource "aws_codecommit_approval_rule_template_association" "source_repository_approval_association" {
     count                       = length(data.aws_codecommit_repository.existing_repository) > 0 ? 1 : 0
     approval_rule_template_name = aws_codecommit_approval_rule_template.source_repository_approval.name
-    repository_name             = length(data.aws_codecommit_repository.existing_repository) > 0 ? data.aws_codecommit_repository.existing_repository[0].repository_name : null
+    repository_name             = var.CODECOMMIT_REPO_NAME
 }
