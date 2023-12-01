@@ -5,6 +5,13 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     service_role   = var.CODEBUILD_ROLE_ARN
     tags           = var.tags
 
+    source {
+        type            = "CODECOMMIT"
+        location        = var.CODECOMMIT_REPO_URL
+        git_clone_depth = 1
+        buildspec       = "buildspec.yml" 
+    }
+
     artifacts {
         type = "S3"
         location = var.BUCKET_NAME
@@ -22,10 +29,5 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
         cloudwatch_logs {
             status = "ENABLED"
         }
-    }
-
-    source {
-        type      = "S3"
-        buildspec = "./buildspec.yml"
     }
 }
