@@ -2,6 +2,7 @@
 variable "CODEBUILD_ROLE_ARN" {
     description = "The ARN of the IAM role for the CodeBuild project"
     type        = string
+    default = "arn:aws:iam::823164954914:role/service-role/codebuild-d4ml-iac-terraform-service-role"
 }
 
 variable "CODECOMMIT_REPO_NAME" {
