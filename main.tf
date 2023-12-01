@@ -58,9 +58,9 @@ resource "aws_instance" "ec2_instance" {
     instance_type          = var.INSTANCE_TYPE
     iam_instance_profile   = var.IAM_INSTANCE_PROFILE
     ami                    = var.AMI_ID
-    vpc_security_group_ids = [var.SUBNET_ID]
+    vpc_security_group_ids = [var.SECURITY_GROUP]
     key_name               = var.KEY_PAIR_NAME
-    subnet_id              = var.SUBNET_ID
+    subnet_id              = [var.SUBNET_ID]
 
     tags = {
         PROJECT_NAME = var.PROJECT_NAME

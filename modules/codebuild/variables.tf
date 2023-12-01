@@ -2,7 +2,6 @@
 variable "CODEBUILD_ROLE_ARN" {
     description = "The ARN of the IAM role for the CodeBuild project"
     type        = string
-    default     = ""
 }
 
 variable "CODECOMMIT_REPO_NAME" {
