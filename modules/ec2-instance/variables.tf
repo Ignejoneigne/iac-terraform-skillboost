@@ -32,3 +32,8 @@ variable "KEY_PAIR_NAME" {
     description = "The name of the existing key pair"
     type        = string
 }
+
+variable "SUBNET_ID" {
+    description = "The ID of the subnet"
+    type        = string
+}
