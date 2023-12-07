@@ -1,0 +1,63 @@
+version: 0.2
+
+env:
+  variables:
+    CODE_SRC_DIR: "."
+    SCRIPT_DIR: "scripts"
+    TF_VERSION: "1.6.4"
+    ENVIRONMENT: "dev"
+    SKIPVALIDATIONFAILURE: "Y"
+    ENABLE_TFVALIDATE: "Y"
+    ENABLE_TFFORMAT: "Y"
+    ENABLE_TFCHECKOV: "Y"
+    ENABLE_TFSEC: "Y"
+    TFSEC_VERSION: "v1.28.1"
+    BUILD_PHASE: "apply" # validate, plan, apply, destroy?
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+      - "unzip -o terraform.zip"
+      - "mv terraform /bin"
+      - "rm terraform.zip"
+      - "chmod +x ${CODEBUILD_SRC_DIR}/${SCRIPT_DIR}/aws-configure.sh"
+      - "/bin/bash ${CODEBUILD_SRC_DIR}/${SCRIPT_DIR}/aws-configure.sh"
+  build:
+    commands:
+      - "cd ${CODEBUILD_SRC_DIR}/${CODE_SRC_DIR}"
+      - |
+
+      
+        if [ "${BUILD_PHASE}" == "validate" ]; then
+          echo ## TERRAFORM INIT : Initialize the Terraform Workspace
+          terraform init
+          echo ## VALIDATION : Starting ...
+          mkdir -p ${CODEBUILD_SRC_DIR}/reports
+          /bin/bash ${CODEBUILD_SRC_DIR}/${SCRIPT_DIR}/tf_ssp_validation.sh ${SKIPVALIDATIONFAILURE} ${ENABLE_TFVALIDATE} ${ENABLE_TFFORMAT} ${ENABLE_TFCHECKOV} ${ENABLE_TFSEC}
+          cp checkov.xml ${CODEBUILD_SRC_DIR}/reports/checkov.xml
+          cp tfsec-junit.xml ${CODEBUILD_SRC_DIR}/reports/tfsec-junit.xml
+        elif [ "${BUILD_PHASE}" == "plan" ]; then
+          echo ## TERRAFORM PLAN : Generate the Terraform Plan
+          terraform plan -out tfapply
+        elif [ "${BUILD_PHASE}" == "apply" ]; then
+          echo ## TERRAFORM APPLY : Starting with the Terraform Apply
+          terraform apply -input=false tfapply
+        elif [ "${BUILD_PHASE}" == "destroy" ]; then
+          terraform destroy --auto-approve
+        fi
+
+artifacts:
+  files:
+    - '**/*'
+reports:
+  checkov-reports:
+    files:
+      - "./reports/checkov.xml"
+    file-format: "JUNITXML"
+  tfsec-reports:
+    files:
+      - "./reports/tfsec-junit.xml"
+    file-format: "JUNITXML"
